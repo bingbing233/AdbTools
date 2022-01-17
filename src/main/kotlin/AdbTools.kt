@@ -55,6 +55,22 @@ object AdbTools {
         return execute(adbCmd)
     }
 
+    /**
+     * 清除app数据
+     */
+    fun clearAppData(pkgName:String): String {
+        val adbCmd = "adb shell pm clear $pkgName"
+        return execute(adbCmd)
+    }
+
+    /**
+     * 卸载
+     */
+    fun uninstall(pkgName:String): String {
+        val adbCmd = "adb shell pm uninstall $pkgName"
+        return execute(adbCmd)
+    }
+
 
     /**
      * 执行命令

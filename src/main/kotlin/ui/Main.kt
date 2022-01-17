@@ -47,7 +47,7 @@ fun App() {
                             onValueChange = { text.value = it },
                             modifier = Modifier.weight(10f),
                             singleLine = true,
-                            label = { Text("输入ADB命令，并点击 √ ") },
+                            label = { Text("输入ADB命令") },
                             keyboardActions = KeyboardActions {
                                 println(this.defaultKeyboardAction(ImeAction.Done))
                             }
@@ -55,12 +55,45 @@ fun App() {
                         Spacer(modifier = Modifier.width(10.dp))
                         Button(onClick = {
                             viewModel.execute(text.value)
-                        }, modifier = Modifier.height(50.dp).width(80.dp)) { Icon(Icons.Default.Done, "") }
+                        }, modifier = Modifier.height(50.dp).width(100.dp)) { Text("执行") }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    //清楚数据
+                    Text("包名命令", style = MaterialTheme.typography.h6)
+                    Spacer(modifier = Modifier.height(3.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth().height(80.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        var text = remember { mutableStateOf("") }
+                        TextField(
+                            value = text.value,
+                            onValueChange = { text.value = it },
+                            modifier = Modifier.weight(10f),
+                            singleLine = true,
+                            label = { Text("输入App包名 ") },
+                            keyboardActions = KeyboardActions {
+                                println(this.defaultKeyboardAction(ImeAction.Done))
+                            }
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Button(onClick = {
+                            viewModel.clearAppData(text.value)
+                        }, modifier = Modifier.height(50.dp).width(100.dp)) { Text("清除数据") }
+
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Button(onClick = {
+                            viewModel.uninstall(text.value)
+                        }, modifier = Modifier.height(50.dp).width(100.dp)) { Text("卸载应用") }
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
 
                     //第一行按钮
+                    Text("快捷命令", style = MaterialTheme.typography.h6)
+                    Spacer(modifier = Modifier.height(3.dp))
                     FlowLayout(modifier = Modifier, horizontalSpace = 10) {
                         Button(onClick = { viewModel.reboot() }) {
                             Text("重启设备")

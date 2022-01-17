@@ -33,4 +33,12 @@ class MainViewModel {
         if(str.contains("unknown"))
             resultStr.value = "unknown --> 无设备"
     }
+
+    fun clearAppData(pkgName:String){
+        resultStr.value = AdbTools.clearAppData(pkgName)
+    }
+
+    fun uninstall(pkgName: String){
+        resultStr.value = AdbTools.uninstall(pkgName)
+    }
 }
