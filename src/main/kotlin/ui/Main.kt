@@ -7,6 +7,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -20,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
@@ -31,9 +34,11 @@ fun App() {
     val viewModel = MainViewModel()
     var resultStr = viewModel.resultStr.collectAsState()
     MaterialTheme {
-        Row(modifier = Modifier.fillMaxSize().padding(20.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+        Column(modifier = Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.SpaceBetween) {
             Box(modifier = Modifier.fillMaxSize().weight(3f)) {
                 Column(modifier = Modifier.fillMaxSize()) {
+                    Text("自定义命令", style = MaterialTheme.typography.h6)
+                    Spacer(modifier = Modifier.height(3.dp))
                     //命令输入
                     Row(
                         modifier = Modifier.fillMaxWidth().height(80.dp),
@@ -44,12 +49,16 @@ fun App() {
                             value = text.value,
                             onValueChange = { text.value = it },
                             modifier = Modifier.weight(10f),
-                            label = { Text("输入ADB命令，并点击 √ ") }
+                            singleLine = true,
+                            label = { Text("输入ADB命令，并点击 √ ") },
+                            keyboardActions = KeyboardActions {
+                                println(this.defaultKeyboardAction(ImeAction.Done))
+                            }
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Button(onClick = {
                             viewModel.execute(text.value)
-                        }, modifier = Modifier.height(40.dp).width(80.dp)) { Icon(Icons.Default.Done, "") }
+                        }, modifier = Modifier.height(50.dp).width(80.dp)) { Icon(Icons.Default.Done, "") }
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
@@ -64,6 +73,13 @@ fun App() {
                         }
                         Button(onClick = { viewModel.getCurrentActivity() }) {
                             Text("当前Activity")
+                        }
+
+                        Button(onClick = { viewModel.getDevices() }) {
+                            Text("已连接设备")
+                        }
+                        Button(onClick = { viewModel.getConnectionState() }) {
+                            Text("设备状态")
                         }
                     }
                 }
@@ -80,7 +96,8 @@ fun App() {
                     text = resultStr.value,
                     modifier = Modifier.fillMaxSize().verticalScroll(enabled = true, state = state),
                     color = Color.Black,
-                    fontSize = 18.sp
+                    fontSize = 18.sp,
+
                 )
             }
         }
