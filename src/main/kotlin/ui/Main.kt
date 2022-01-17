@@ -1,14 +1,11 @@
 package ui// Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 import MainViewModel
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -64,7 +61,7 @@ fun App() {
                     Spacer(modifier = Modifier.height(10.dp))
 
                     //第一行按钮
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                    FlowLayout(modifier = Modifier, horizontalSpace = 10) {
                         Button(onClick = { viewModel.reboot() }) {
                             Text("重启设备")
                         }
@@ -98,7 +95,7 @@ fun App() {
                     color = Color.Black,
                     fontSize = 18.sp,
 
-                )
+                    )
             }
         }
     }
