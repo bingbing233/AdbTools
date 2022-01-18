@@ -102,12 +102,56 @@ object AdbTools {
     }
 
     /**
+     * 系统app包名
+     */
+    fun getSysAppPkgName():String{
+        val cmd = "adb shell pm list packages -s"
+        return execute(cmd)
+    }
+
+    /**
+     * 第三方app包名
+     */
+    fun get3AppPkgName():String{
+        val cmd = "adb shell pm list packages -3"
+        return execute(cmd)
+    }
+
+    /**
      * 屏幕截图
      */
     fun screenShot():String{
         val filePath = "adb_screen_shot_${System.currentTimeMillis()}.png"
         val cmd = "adb shell screencap /sdcard/adb/adb_file/$filePath"
         return execute(cmd)  +"file:$filePath"
+    }
+
+    /**
+     * 停止adb
+     */
+    fun killAdb(){
+        val cmd = "adb kill-server"
+        execute(cmd)
+    }
+
+    /**
+     * 设备信息
+     */
+    fun getDeviceInfo(): String {
+        val cmdList = arrayOf("adb shell getprop ro.product.model ","adb shell wm size","adb shell wm density")
+        var resultStr = ""
+        repeat(cmdList.size){
+            resultStr += execute(cmdList[it])
+        }
+        return resultStr
+    }
+
+    /**
+     * cpu信息
+     */
+    fun getCPUInfo():String{
+        val cmd = "adb shell cat /proc/cpuinfo"
+        return execute(cmd)
     }
 
     /**

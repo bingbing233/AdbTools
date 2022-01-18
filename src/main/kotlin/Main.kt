@@ -153,8 +153,20 @@ fun App() {
                         Button(onClick = { viewModel.getAllPkgName() }) {
                             Text("查看全部app包名")
                         }
+                        Button(onClick = { viewModel.getSysPkgName() }) {
+                            Text("系统app包名")
+                        }
+                        Button(onClick = { viewModel.get3PkgName() }) {
+                            Text("第三方app包名")
+                        }
                         Button(onClick = { viewModel.screenShot() }) {
                             Text("屏幕截图")
+                        }
+                        Button(onClick = { viewModel.getDeviceInfo() }) {
+                            Text("设备信息")
+                        }
+                        Button(onClick = { viewModel.getCPUInfo() }) {
+                            Text("CPU信息")
                         }
                     }
                 }
@@ -180,7 +192,10 @@ fun App() {
 }
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication, title = "Adb工具", icon = painterResource("favicon.png")) {
+    Window(onCloseRequest = {
+        AdbTools.killAdb()
+        exitApplication()
+    }, title = "Adb工具", icon = painterResource("favicon.png")) {
         window.setSize(800, 800)
         App()
     }

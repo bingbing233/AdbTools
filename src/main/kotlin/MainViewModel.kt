@@ -57,4 +57,20 @@ class MainViewModel {
     fun screenShot(){
         resultStr.value = AdbTools.screenShot()
     }
+
+    fun getSysPkgName(){
+        resultStr.value = AdbTools.getSysAppPkgName()
+    }
+
+    fun get3PkgName(){
+        resultStr.value = AdbTools.get3AppPkgName()
+    }
+
+    fun getDeviceInfo(){
+        resultStr.value = AdbTools.getDeviceInfo()
+    }
+
+    fun getCPUInfo(){
+        resultStr.value =AdbTools.getCPUInfo()
+    }
 }
