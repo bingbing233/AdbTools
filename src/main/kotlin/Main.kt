@@ -1,5 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.ScrollbarAdapter
+import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
@@ -191,6 +193,7 @@ fun App() {
                     readOnly = true,
                     textStyle = MaterialTheme.typography.body1
                 )
+                VerticalScrollbar(modifier = Modifier.align(Alignment.CenterEnd), adapter = ScrollbarAdapter(state))
             }
         }
     }
