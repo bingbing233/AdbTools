@@ -41,4 +41,20 @@ class MainViewModel {
     fun uninstall(pkgName: String){
         resultStr.value = AdbTools.uninstall(pkgName)
     }
+
+    fun install(path:String){
+        resultStr.value = AdbTools.install(path)
+    }
+
+    fun pushFile(path: String){
+        resultStr.value = AdbTools.pushFile(path)
+    }
+
+    fun getAllPkgName(){
+        resultStr.value = AdbTools.getAllPkgName()
+    }
+
+    fun screenShot(){
+        resultStr.value = AdbTools.screenShot()
+    }
 }
