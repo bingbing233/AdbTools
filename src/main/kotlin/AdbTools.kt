@@ -20,13 +20,13 @@ object AdbTools {
      * 当前ac
      */
     fun getCurrentActivity(): String {
-        var adbCmd = ""
+        val adbCmd:String
         val androidVersion = getAndroidVersion().toFloat()
-        if (androidVersion >= 8.1) {
-            adbCmd = "adb shell dumpsys activity | findstr \"mResume\""
+        adbCmd = if (androidVersion >= 8.1) {
+            "adb shell dumpsys activity | findstr \"mResume\""
 
         } else {
-            adbCmd = "adb shell dumpsys activity | findstr \"mFocus\""
+            "adb shell dumpsys activity | findstr \"mFocus\""
         }
         return execute(adbCmd)
     }
@@ -84,7 +84,8 @@ object AdbTools {
                 //拿到输出流
                 val fis = process!!.inputStream
                 //用缓冲器读行
-                val bufferedReader = BufferedReader(InputStreamReader(fis, "GB2312"))
+//                val bufferedReader = BufferedReader(InputStreamReader(fis, "GB2312"))
+                val bufferedReader = BufferedReader(InputStreamReader(fis, "gbk"))
                 return bufferedReader.readText()
             }.onFailure {
                 return "error mgs = ${it.message}"

@@ -1,5 +1,4 @@
-package ui// Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-import MainViewModel
+// Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -8,8 +7,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -18,18 +15,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import ui.FlowLayout
 
 @Composable
 @Preview()
 fun App() {
     val viewModel = MainViewModel()
-    var resultStr = viewModel.resultStr.collectAsState()
+    val resultStr = viewModel.resultStr.collectAsState()
     MaterialTheme {
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.SpaceBetween) {
             Box(modifier = Modifier.fillMaxSize().weight(3f)) {
@@ -41,11 +42,16 @@ fun App() {
                         modifier = Modifier.fillMaxWidth().height(80.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        var text = remember { mutableStateOf("") }
-                        TextField(
+                        val text = remember { mutableStateOf("") }
+                        OutlinedTextField(
                             value = text.value,
                             onValueChange = { text.value = it },
-                            modifier = Modifier.weight(10f),
+                            modifier = Modifier.weight(10f).onKeyEvent {
+                                if(it.type == KeyEventType.KeyUp && it.toString().contains("Enter")){
+                                    viewModel.execute(text.value)
+                                }
+                                false
+                            },
                             singleLine = true,
                             label = { Text("输入ADB命令") },
                             keyboardActions = KeyboardActions {
@@ -67,8 +73,8 @@ fun App() {
                         modifier = Modifier.fillMaxWidth().height(80.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        var text = remember { mutableStateOf("") }
-                        TextField(
+                        val text = remember { mutableStateOf("") }
+                        OutlinedTextField(
                             value = text.value,
                             onValueChange = { text.value = it },
                             modifier = Modifier.weight(10f),
