@@ -68,7 +68,7 @@ fun App() {
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    //清除数据
+                    //包名命令
                     Text("包名命令", style = MaterialTheme.typography.h6)
                     Spacer(modifier = Modifier.height(3.dp))
                     Row(
@@ -95,6 +95,11 @@ fun App() {
                         Button(onClick = {
                             viewModel.uninstall(text.value)
                         }, modifier = Modifier.height(50.dp).width(100.dp)) { Text("卸载应用") }
+
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Button(onClick = {
+                            viewModel.getPkgPath(text.value)
+                        }, modifier = Modifier.height(50.dp).width(100.dp)) { Text("包名路径") }
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))

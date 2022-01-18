@@ -9,6 +9,32 @@ object AdbTools {
     }
 
     /**
+     * 执行命令
+     */
+    fun execute(adbCmd: String): String {
+        if (adbCmd.isNotBlank()) {
+            kotlin.runCatching {
+                val mCmd = ArrayList(cmd)
+                mCmd.add(adbCmd)
+                val process = Runtime.getRuntime().exec(mCmd.toArray(Array(3) { "" }))
+                //拿到输出流
+                val fis = process!!.inputStream
+                //用缓冲器读行
+                //开发时好像可以用gb2312
+//                val bufferedReader = BufferedReader(InputStreamReader(fis, "GB2312"))
+                //打包时改成gbk(开发时也可用)
+                val bufferedReader = BufferedReader(InputStreamReader(fis, "gbk"))
+                return bufferedReader.readText()
+            }.onFailure {
+                return "error mgs = ${it.message}"
+            }
+        }else{
+            return "命令为空"
+        }
+        return ""
+    }
+
+    /**
      * 重启设备
      */
     fun reboot(): String {
@@ -88,7 +114,7 @@ object AdbTools {
      */
     fun pushFile(path:String):String{
         val fileFormat = path.split(".")
-        val filePath = "/sdcard/adb/adb_file/adb_file_${System.currentTimeMillis()}.${fileFormat[fileFormat.size-1]}"
+        val filePath = "/sdcard/adb_file_${System.currentTimeMillis()}.${fileFormat[fileFormat.size-1]}"
         val cmd = "adb push $path $filePath"
         return execute(cmd) + "/n"+"file:$filePath"
     }
@@ -121,8 +147,8 @@ object AdbTools {
      * 屏幕截图
      */
     fun screenShot():String{
-        val filePath = "adb_screen_shot_${System.currentTimeMillis()}.png"
-        val cmd = "adb shell screencap /sdcard/adb/adb_file/$filePath"
+        val filePath = "/sdcard/adb_screen_shot_${System.currentTimeMillis()}.png"
+        val cmd = "adb shell screencap $filePath"
         return execute(cmd)  +"file:$filePath"
     }
 
@@ -138,7 +164,7 @@ object AdbTools {
      * 设备信息
      */
     fun getDeviceInfo(): String {
-        val cmdList = arrayOf("adb shell getprop ro.product.model ","adb shell wm size","adb shell wm density")
+        val cmdList = arrayOf("adb shell getprop ro.product.brand","adb shell getprop ro.product.model ","adb shell wm size","adb shell wm density")
         var resultStr = ""
         repeat(cmdList.size){
             resultStr += execute(cmdList[it])
@@ -155,28 +181,12 @@ object AdbTools {
     }
 
     /**
-     * 执行命令
+     * 查看包名路径
      */
-    fun execute(adbCmd: String): String {
-        if (adbCmd.isNotBlank()) {
-            kotlin.runCatching {
-                val mCmd = ArrayList(cmd)
-                mCmd.add(adbCmd)
-                val process = Runtime.getRuntime().exec(mCmd.toArray(Array(3) { "" }))
-                //拿到输出流
-                val fis = process!!.inputStream
-                //用缓冲器读行
-                //开发时好像可以用gb2312
-//                val bufferedReader = BufferedReader(InputStreamReader(fis, "GB2312"))
-                //打包时改成gbk(开发时也可用)
-                val bufferedReader = BufferedReader(InputStreamReader(fis, "gbk"))
-                return bufferedReader.readText()
-            }.onFailure {
-                return "error mgs = ${it.message}"
-            }
-        }else{
-            return "命令为空"
-        }
-        return ""
+    fun getPkgPath(pkgName: String):String{
+        val cmd = "adb shell pm path $pkgName"
+        return execute(cmd)
     }
+
+
 }

@@ -73,4 +73,8 @@ class MainViewModel {
     fun getCPUInfo(){
         resultStr.value =AdbTools.getCPUInfo()
     }
+
+    fun getPkgPath(pkgName:String){
+        resultStr.value = AdbTools.getPkgPath(pkgName)
+    }
 }
