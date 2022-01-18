@@ -84,7 +84,9 @@ object AdbTools {
                 //拿到输出流
                 val fis = process!!.inputStream
                 //用缓冲器读行
+                //开发时好像可以用gb2312
 //                val bufferedReader = BufferedReader(InputStreamReader(fis, "GB2312"))
+                //打包时改成gbk
                 val bufferedReader = BufferedReader(InputStreamReader(fis, "gbk"))
                 return bufferedReader.readText()
             }.onFailure {
