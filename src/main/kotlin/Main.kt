@@ -1,18 +1,32 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import ui.*
+import kotlin.coroutines.coroutineContext
+
 
 fun main() = application {
+
+    LaunchedEffect("key1") {
+        MainViewModel.getDeviceInfo()
+        MainViewModel.getCPUInfo()
+        MainViewModel.getBattery()
+    }
+
     Window(onCloseRequest = {
         AdbTools.killAdb()
         exitApplication()
@@ -32,19 +46,31 @@ fun main() = application {
 @Composable
 @Preview()
 fun App() {
+    val snackText = MainViewModel.snackText.collectAsState()
     MaterialTheme {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier.fillMaxSize().padding(10.dp)) {
-                //整个页面大体划分为左右布局
-                LeftFragment(modifier = Modifier.weight(1f))
-                RightFragment(modifier = Modifier.weight(4f))
+        Scaffold(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Row(modifier = Modifier.fillMaxSize().padding(10.dp)) {
+                    //整个页面大体划分为左右布局
+                    LeftFragment(modifier = Modifier.weight(1f))
+                    Spacer(modifier = Modifier.width(10.dp))
+                    RightFragment(modifier = Modifier.weight(4f))
+                }
             }
+            snackText.value?.let { showSnack(it) }
         }
+
     }
 }
 
-
-
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun showSnack(text:String){
+    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
+    GlobalScope.launch {
+        scaffoldState.snackbarHostState.showSnackbar(text,"确定")
+    }
+}
 
 
 //@Composable

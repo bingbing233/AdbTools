@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.awt.Toolkit
+import java.awt.datatransfer.StringSelection
 import java.io.File
 
 object MainViewModel {
@@ -22,6 +24,18 @@ object MainViewModel {
     // 设备信息
     private val mDeviceInfo = MutableStateFlow<String>("")
     val deviceInfo = mDeviceInfo.asStateFlow()
+
+    // 电池信息
+    private val mBatteryInfo = MutableStateFlow<String>("")
+    val batteryInfo = mBatteryInfo.asStateFlow()
+
+    // 电池信息
+    private val mCPUInfo = MutableStateFlow<String>("")
+    val CPUInfo = mCPUInfo.asStateFlow()
+
+    // snack
+    private val mSnackText = MutableStateFlow<String?>(null)
+    val snackText = mSnackText.asStateFlow()
 
     // 当前选中功能
     private val mCurFunc = MutableStateFlow<String>("")
@@ -136,14 +150,38 @@ object MainViewModel {
     }
 
     fun getDeviceInfo() {
-        resultStr.value = AdbTools.getDeviceInfo()
+        scope.launch {
+            val info = AdbTools.getDeviceInfo()
+            mDeviceInfo.emit(info)
+        }
+    }
+
+    fun getBattery(){
+        scope.launch {
+            val info = AdbTools.getBatteryInfo()
+            mBatteryInfo.emit(info)
+        }
     }
 
     fun getCPUInfo() {
-        resultStr.value = AdbTools.getCPUInfo()
+        scope.launch {
+            val info = AdbTools.getCPUInfo()
+            mCPUInfo.emit(info)
+        }
     }
 
     fun getPkgPath(pkgName: String) {
         resultStr.value = AdbTools.getPkgPath(pkgName)
+    }
+
+    fun copyText(text:String){
+        scope.launch {
+            mSnackText.emit("已复制到剪切板")
+            val clip = Toolkit.getDefaultToolkit().systemClipboard
+            val tText = StringSelection(text)
+            clip.setContents(tText,null)
+            mSnackText.emit(null)
+        }
+
     }
 }

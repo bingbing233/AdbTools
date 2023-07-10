@@ -1,6 +1,7 @@
 package ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -9,7 +10,7 @@ import androidx.compose.ui.Modifier
  */
 @Composable
 fun RightFragment(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
+    LargeCard(modifier = modifier.fillMaxSize()) {
 
     }
 }

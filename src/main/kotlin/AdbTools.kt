@@ -188,5 +188,12 @@ object AdbTools {
         return execute(cmd)
     }
 
+    /**
+     * 电池信息
+     */
+    fun getBatteryInfo(): String {
+        val cmd = "adb shell dumpsys battery"
+        return execute(cmd)
+    }
 
 }
