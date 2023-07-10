@@ -1,5 +1,6 @@
 package ui
 
+import androidx.compose.animation.core.*
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -10,11 +11,18 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.VectorProperty
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import color.colorItemSelected
-import color.colorItemUnSelected
+import colors.colorAccent
+import colors.colorItemSelected
+import colors.colorItemUnSelected
 
 /**
  * 通用MenuItem样式
@@ -84,5 +92,13 @@ fun ScrollableLargeCard(modifier: Modifier = Modifier,verticalPadding:Dp = 16.dp
                 modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
             )
         }
+    }
+}
+
+@Composable
+fun Loading(modifier: Modifier = Modifier){
+    val rotation = rememberInfiniteTransition().animateFloat(0f,360f, infiniteRepeatable(animation = tween(durationMillis = 1000, easing = LinearEasing)))
+    Canvas(modifier.rotate(rotation.value).size(50.dp)){
+        drawArc(colorAccent,0f,270f, useCenter = false, style = Stroke(5f, cap = StrokeCap.Round, join = StrokeJoin.Round))
     }
 }
