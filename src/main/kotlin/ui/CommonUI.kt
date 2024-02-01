@@ -52,12 +52,43 @@ fun MenuItem(selected: Boolean = false, icon: ImageVector, text: String, onClick
 }
 
 /**
+ * 通用MenuItem样式
+ * @param selected 是否选中
+ * @param icon 图标
+ * @param text 内容
+ * @param onClick 点击事件
+ */
+@Preview
+@Composable
+fun HorizontalMenuItem(selected: Boolean = false, icon: ImageVector, text: String, onClick: () -> Unit) {
+    val bgColor = if (selected) colorItemSelected else colorItemUnSelected
+    Row(modifier = Modifier
+        .height(50.dp)
+        .background(color = bgColor)
+        .clickable {
+            onClick()
+        }
+        .padding(horizontal = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(icon, "")
+        Spacer(modifier = Modifier.width(20.dp))
+        Text(text)
+    }
+}
+
+/**
  * 通用Card样式:Card外观的Column
  */
 @Composable
-fun LargeCard(modifier: Modifier = Modifier,verticalPadding:Dp = 8.dp,horizontalPadding:Dp = 0.dp, content: @Composable () -> Unit) {
+fun LargeCard(
+    modifier: Modifier = Modifier,
+    verticalPadding: Dp = 8.dp,
+    horizontalPadding: Dp = 0.dp,
+    content: @Composable () -> Unit
+) {
     Card(modifier = modifier, shape = RoundedCornerShape(8.dp), elevation = 8.dp) {
-        Box(modifier = Modifier.padding(horizontalPadding,verticalPadding)) {
+        Box(modifier = Modifier.padding(horizontalPadding, verticalPadding)) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 content()
             }
@@ -69,9 +100,33 @@ fun LargeCard(modifier: Modifier = Modifier,verticalPadding:Dp = 8.dp,horizontal
  * 通用Card样式:Card外观的Column
  */
 @Composable
-fun MediumCard(modifier: Modifier = Modifier,verticalPadding:Dp = 4.dp,horizontalPadding:Dp = 0.dp, content: @Composable () -> Unit) {
+fun HorizontalMediumCard(
+    modifier: Modifier = Modifier,
+    verticalPadding: Dp = 4.dp,
+    horizontalPadding: Dp = 0.dp,
+    content: @Composable () -> Unit
+) {
     Card(modifier = modifier, shape = RoundedCornerShape(4.dp), elevation = 8.dp) {
-        Box(modifier = Modifier.padding(horizontalPadding,verticalPadding)) {
+        Box(modifier = Modifier.padding(horizontalPadding, verticalPadding)) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                content()
+            }
+        }
+    }
+}
+
+/**
+ * 通用Card样式:Card外观的Column
+ */
+@Composable
+fun MediumCard(
+    modifier: Modifier = Modifier,
+    verticalPadding: Dp = 4.dp,
+    horizontalPadding: Dp = 0.dp,
+    content: @Composable () -> Unit
+) {
+    Card(modifier = modifier, shape = RoundedCornerShape(4.dp), elevation = 8.dp) {
+        Box(modifier = Modifier.padding(horizontalPadding, verticalPadding)) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 content()
             }
@@ -80,11 +135,16 @@ fun MediumCard(modifier: Modifier = Modifier,verticalPadding:Dp = 4.dp,horizonta
 }
 
 @Composable
-fun ScrollableLargeCard(modifier: Modifier = Modifier,verticalPadding:Dp = 16.dp,horizontalPadding:Dp = 0.dp, content: @Composable () -> Unit) {
+fun ScrollableLargeCard(
+    modifier: Modifier = Modifier,
+    verticalPadding: Dp = 16.dp,
+    horizontalPadding: Dp = 0.dp,
+    content: @Composable () -> Unit
+) {
     val state = rememberScrollState()
     Card(modifier = modifier, shape = RoundedCornerShape(16.dp), elevation = 8.dp) {
-        Box(modifier = Modifier.padding(horizontalPadding,verticalPadding)) {
-            Column(modifier = Modifier.fillMaxWidth().verticalScroll(state,true)) {
+        Box(modifier = Modifier.padding(horizontalPadding, verticalPadding)) {
+            Column(modifier = Modifier.fillMaxWidth().verticalScroll(state, true)) {
                 content()
             }
             VerticalScrollbar(
@@ -96,9 +156,19 @@ fun ScrollableLargeCard(modifier: Modifier = Modifier,verticalPadding:Dp = 16.dp
 }
 
 @Composable
-fun Loading(modifier: Modifier = Modifier){
-    val rotation = rememberInfiniteTransition().animateFloat(0f,360f, infiniteRepeatable(animation = tween(durationMillis = 1000, easing = LinearEasing)))
-    Canvas(modifier.rotate(rotation.value).size(50.dp)){
-        drawArc(colorAccent,0f,270f, useCenter = false, style = Stroke(5f, cap = StrokeCap.Round, join = StrokeJoin.Round))
+fun Loading(modifier: Modifier = Modifier) {
+    val rotation = rememberInfiniteTransition().animateFloat(
+        0f,
+        360f,
+        infiniteRepeatable(animation = tween(durationMillis = 1000, easing = LinearEasing))
+    )
+    Canvas(modifier.rotate(rotation.value).size(50.dp)) {
+        drawArc(
+            colorAccent,
+            0f,
+            270f,
+            useCenter = false,
+            style = Stroke(5f, cap = StrokeCap.Round, join = StrokeJoin.Round)
+        )
     }
 }
