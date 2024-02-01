@@ -27,7 +27,7 @@ private fun MainFuncMenu() {
     val selectFunc = curFunc.value
     HorizontalMediumCard(verticalPadding = 0.dp) {
         // apk安装
-        HorizontalMenuItem(MainViewModel.FUNC_INSTALL == selectFunc, Icons.Default.AddCircle, titleInstall) {
+        HorizontalMenuItem(MainViewModel.FUNC_INSTALL == selectFunc, Icons.Default.Phone, titleInstall) {
             MainViewModel.setCurFunc(MainViewModel.FUNC_INSTALL)
         }
         // 快捷功能
@@ -35,7 +35,7 @@ private fun MainFuncMenu() {
             MainViewModel.setCurFunc(MainViewModel.FUNC_MAIN)
         }
         // 刷机相关
-        HorizontalMenuItem(MainViewModel.FUNC_FLASH == selectFunc, Icons.Default.Phone, titleFlash) {
+        HorizontalMenuItem(MainViewModel.FUNC_FLASH == selectFunc, Icons.Default.AccountBox, titleFlash) {
             MainViewModel.setCurFunc(MainViewModel.FUNC_FLASH)
         }
     }

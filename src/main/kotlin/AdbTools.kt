@@ -88,8 +88,8 @@ object AdbTools {
     /**
      * 清除app数据
      */
-    fun clearAppData(pkgName: String): String {
-        val adbCmd = "adb shell pm clear $pkgName"
+    fun clearAppData(pkgName: String,deviceId: String): String {
+        val adbCmd = "adb -s $deviceId shell pm clear $pkgName"
         return execute(adbCmd)
     }
 

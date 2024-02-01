@@ -19,6 +19,10 @@ object InstallViewModel {
     private val mAutoInstall = MutableStateFlow(false)
     val autoInstall = mAutoInstall.asStateFlow()
 
+    // 应用包名
+    private val mPkgName = MutableStateFlow<String>("")
+    val pkgName = mPkgName.asStateFlow()
+
     /**
      * 获取设备列表
      */
@@ -91,9 +95,26 @@ object InstallViewModel {
         }
     }
 
-    fun killAdb(){
+    fun killAdb() {
         scope.launch(Dispatchers.IO) {
             AdbTools.killAdb()
+        }
+    }
+
+    fun clearData() {
+        scope.launch(Dispatchers.IO) {
+            mDeviceList.value.forEach {
+                if (it.check) {
+                    val result = AdbTools.clearAppData(mPkgName.value, it.deviceId)
+                    MainViewModel.setSnack("设备ID:${it.deviceId} 结果=$result")
+                }
+            }
+        }
+    }
+
+    fun setPkgName(name: String) {
+        scope.launch {
+            mPkgName.emit(name)
         }
     }
 }

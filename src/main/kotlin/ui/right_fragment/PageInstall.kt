@@ -1,9 +1,7 @@
 package ui.right_fragment
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -29,13 +27,14 @@ private fun FuncInstall() {
     val deviceListState = InstallViewModel.deviceList.collectAsState()
     val autoInstall = InstallViewModel.autoInstall.collectAsState()
     val fileName = MainViewModel.fileList.collectAsState()
+    val pkgName = InstallViewModel.pkgName.collectAsState()
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
             "设备列表",
             style = TextStyle(color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 18.sp)
         )
         Spacer(modifier = Modifier.height(4.dp))
-
+        // 第一行
         Row(modifier = Modifier.height(40.dp), verticalAlignment = Alignment.CenterVertically) {
             Spacer(modifier = Modifier.width(10.dp))
             Button(onClick = { InstallViewModel.killAdb() }) {
@@ -66,6 +65,17 @@ private fun FuncInstall() {
             Checkbox(checked = autoInstall.value, onCheckedChange = { InstallViewModel.autoInstall(it) })
         }
         Spacer(modifier = Modifier.height(10.dp))
+        // 第二行
+        Row {
+            Spacer(modifier = Modifier.width(10.dp))
+            Button(onClick = { InstallViewModel.clearData() }) {
+                Text("清除APP数据")
+            }
+            Spacer(modifier = Modifier.width(10.dp))
+            OutlinedTextField(pkgName.value, onValueChange = { InstallViewModel.setPkgName(it) }, placeholder = { Text("输入想要清除数据的包名，并在相应的设备旁边打√") })
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        // 设备列表
         deviceListState.value.forEachIndexed { index, deviceBean ->
             DeviceListItem(deviceBean) {
                 InstallViewModel.selectDevice(index, it)
