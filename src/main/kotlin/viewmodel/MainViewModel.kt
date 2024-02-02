@@ -84,4 +84,10 @@ object MainViewModel {
             mLog.emit(sb.toString())
         }
     }
+
+    fun clearLog(){
+        scope.launch {
+            mLog.emit("")
+        }
+    }
 }

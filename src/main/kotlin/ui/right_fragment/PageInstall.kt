@@ -72,7 +72,12 @@ private fun FuncInstall() {
                 Text("清除APP数据")
             }
             Spacer(modifier = Modifier.width(10.dp))
-            OutlinedTextField(pkgName.value, onValueChange = { InstallViewModel.setPkgName(it) }, placeholder = { Text("输入想要清除数据的包名，并在相应的设备旁边打√") })
+            OutlinedTextField(
+                pkgName.value,
+                maxLines = 1,
+                onValueChange = { InstallViewModel.setPkgName(it) },
+                placeholder = { Text(text = "输入清除数据的包名，并在相应的设备旁边打√") },
+            )
         }
         Spacer(modifier = Modifier.height(10.dp))
         // 设备列表
