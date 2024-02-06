@@ -2,7 +2,9 @@ package viewmodel
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.awt.Toolkit
@@ -29,12 +31,16 @@ object MainViewModel {
     val curFunc = mCurFunc.asStateFlow()
 
     // 命令日志
-    private val mSnack = MutableStateFlow<String>("")
-    val snack = mSnack.asStateFlow()
+    private val mSnack = MutableSharedFlow<String>()
+    val snack = mSnack.asSharedFlow()
 
     // log
     private val mLog = MutableStateFlow<String>("")
     val log = mLog.asStateFlow()
+
+    // 是否展示日志区域
+    private val mShowLogArea = MutableStateFlow<Boolean>(true)
+    val showLogArea = mShowLogArea.asStateFlow()
 
     /**
      * 更新文件列表
@@ -52,6 +58,7 @@ object MainViewModel {
     fun setCurFunc(func: String) {
         scope.launch {
             mCurFunc.emit(func)
+            mShowLogArea.emit(func != FUNC_FLASH)
         }
     }
 

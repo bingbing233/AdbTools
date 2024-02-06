@@ -36,7 +36,6 @@ private fun FuncInstall() {
         Spacer(modifier = Modifier.height(4.dp))
         // 第一行
         Row(modifier = Modifier.height(40.dp), verticalAlignment = Alignment.CenterVertically) {
-            Spacer(modifier = Modifier.width(10.dp))
             Button(onClick = { InstallViewModel.killAdb() }) {
                 Text("重启ADB")
             }
@@ -67,7 +66,6 @@ private fun FuncInstall() {
         Spacer(modifier = Modifier.height(10.dp))
         // 第二行
         Row {
-            Spacer(modifier = Modifier.width(10.dp))
             Button(onClick = { InstallViewModel.clearData() }) {
                 Text("清除APP数据")
             }

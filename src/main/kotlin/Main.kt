@@ -33,7 +33,7 @@ fun main() = application {
         exitApplication()
     }, title = "Adb工具", icon = painterResource("favicon.png")) {
         // 设置窗口尺寸
-        window.setSize(1200, 600)
+        window.setSize(1400, 700)
         // 设置文件拖拽回调
         window.contentPane.dropTarget = getDropFileTarget {
             MainViewModel.updateFiles(it)

@@ -15,6 +15,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sun.tools.javac.Main
 import ui.LargeCard
 import viewmodel.InstallViewModel
 import viewmodel.MainViewModel
@@ -27,6 +28,7 @@ fun RightFragment(modifier: Modifier = Modifier) {
     val curFunc = MainViewModel.curFunc.collectAsState()
     val log = MainViewModel.log.collectAsState()
     val scrollState = rememberScrollState(0)
+    val showLogArea = MainViewModel.showLogArea.collectAsState()
     Column(modifier = modifier.fillMaxSize()) {
         LargeCard(modifier = Modifier.fillMaxWidth().weight(1.5f)) {
             when (curFunc.value) {
@@ -55,24 +57,26 @@ fun RightFragment(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        LargeCard(modifier = Modifier.fillMaxWidth().weight(1f), verticalPadding = 10.dp, horizontalPadding = 10.dp) {
-            Text("日志输出", style = TextStyle(color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Bold))
-            Box(modifier = Modifier.fillMaxSize()) {
-                Text(log.value, modifier = Modifier.fillMaxSize().verticalScroll(scrollState))
-                VerticalScrollbar(
-                    adapter = ScrollbarAdapter(scrollState),
-                    modifier = Modifier.height(100.dp).align(Alignment.CenterEnd)
-                )
-                Image(
-                    imageVector = Icons.Outlined.Delete,
-                    "",
-                    modifier = Modifier.clickable { MainViewModel.clearLog() }.align(Alignment.TopEnd).border(
-                        shape = RoundedCornerShape(100.dp), border = BorderStroke(
-                            0.dp,
-                            Color.White
-                        )
-                    ).size(30.dp)
-                )
+        if(showLogArea.value){
+            LargeCard(modifier = Modifier.fillMaxWidth().weight(1f), verticalPadding = 10.dp, horizontalPadding = 10.dp) {
+                Text("日志输出", style = TextStyle(color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Bold))
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(log.value, modifier = Modifier.fillMaxSize().verticalScroll(scrollState))
+                    VerticalScrollbar(
+                        adapter = ScrollbarAdapter(scrollState),
+                        modifier = Modifier.height(100.dp).align(Alignment.CenterEnd)
+                    )
+                    Image(
+                        imageVector = Icons.Outlined.Delete,
+                        "",
+                        modifier = Modifier.clickable { MainViewModel.clearLog() }.align(Alignment.TopEnd).border(
+                            shape = RoundedCornerShape(100.dp), border = BorderStroke(
+                                0.dp,
+                                Color.White
+                            )
+                        ).size(30.dp)
+                    )
+                }
             }
         }
     }

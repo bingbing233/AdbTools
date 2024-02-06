@@ -47,6 +47,19 @@ object AdbTools {
     }
 
     /**
+     * 重启到recovery
+     */
+    fun rebootRecovery():String{
+        val adbCmd = "adb reboot recovery"
+        return execute(adbCmd)
+    }
+
+    fun rebootFastboot():String{
+        val adbCmd = "adb reboot fastboot"
+        return execute(adbCmd)
+    }
+
+    /**
      * 当前ac
      */
     fun getCurrentActivity(): String {
